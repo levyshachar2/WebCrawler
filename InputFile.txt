@@ -1,0 +1,13 @@
+{
+  "resultsFile" :"D:\\WorkspaceJava\\WebCrawler\\results.txt",
+  "stateFile": "D:\\WorkspaceJava\\WebCrawler\\crawlerState.txt",
+  "seeds": [
+			"http://www.nana.co.il",
+            "http://www.cnn.com",
+            "http://www.slashdot.org"
+			],
+  "searchExpression": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+  "logLevel": "INFO",
+  "durationOfWebCrawler": 1,
+  "timeUnit": "MINUTES" 
+}
