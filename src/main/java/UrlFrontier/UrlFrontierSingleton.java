@@ -12,32 +12,45 @@ import java.util.List;
  * this is the web page with the minimum visitations. 
  *
  */
-public class UrlFrontier {
+public class UrlFrontierSingleton {
 	/**
 	 * Priority queue of the url's
 	 */
 	private PriorityQueue urlQueue;
+
+	private UrlFrontierSingleton() {
+
+	}
+
+	private static class SingletonHelper{
+		private static final UrlFrontierSingleton INSTANCE = new UrlFrontierSingleton();
+	}
+
+	public static UrlFrontierSingleton getInstance(){
+		return SingletonHelper.INSTANCE;
+	}
+
 	/**
 	 * default constructor
 	 */
-	public UrlFrontier(){
+	public void initUrlFrontierSingleton(){
 		urlQueue = new PriorityQueue();
 	}
 	/**
 	 * copy constructor
 	 * @param otherQueue
 	 */
-	public UrlFrontier(PriorityQueue otherQueue){
+	public void initUrlFrontierSingleton(PriorityQueue otherQueue){
 		urlQueue = otherQueue;
 	}
 	/**
 	 * Initiate the URL frontier with given seeds
 	 * @param seeds - list of given URL's
 	 */
-	public UrlFrontier(List<Object> seeds) {
+	public void initUrlFrontierSingleton(List<Object> seeds) {
 		urlQueue = new PriorityQueue(seeds);
 	}
-	
+
 	/**
 	 * Gets the head of the priority queue, returns the element with the min priority
 	 */
@@ -82,9 +95,8 @@ public class UrlFrontier {
 	 * @param - a list of URL's to insert to the queue
 	 */
 	public void updateFoundUrls(List<URL> urlsFound) {
-		for(int i=0;i<urlsFound.size();i++){
-			URL url = urlsFound.get(i);
-			insert(url);		
+		for (URL url : urlsFound) {
+			insert(url);
 		}
 	}
 	

@@ -1,13 +1,17 @@
-package main;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import UrlFrontier.UrlFrontierSingleton;
+import crawler.BreadthDepthSearchWebCrawler;
+import httpParser.HttpRegexSearcher;
+import org.apache.commons.lang3.time.StopWatch;
+import org.junit.rules.Stopwatch;
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.writers.FileWriter;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import crawler.BreadhDepthSearchWebCrawler;
 import util.ConfigurationFile;
 import util.FileHandlerIO;
 import util.StateHandler;
@@ -28,13 +32,18 @@ public class Main {
 			.activate();
 			Logger.info(configFile.toString());
 			StateHandler stateHandler = new StateHandler(configFile);
-			int numberOfThreads = Math.min(stateHandler.getUrlFrontier().size(), UPPERBOUNDNUMBEROFTHREADS);
-			ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
+			int numberOfThreads = Math.min(UrlFrontierSingleton.getInstance().size(), UPPERBOUNDNUMBEROFTHREADS);
+			ExecutorService crawlers = Executors.newFixedThreadPool(numberOfThreads);
+			ExecutorService searchers = Executors.newFixedThreadPool(numberOfThreads);
+			Runnable crawlerTask =  new BreadthDepthSearchWebCrawler();
+			Runnable searchTask = new HttpRegexSearcher(stateHandler);
+
 			for(int i=0; i< numberOfThreads ; i++){
-				Runnable worker =  new BreadhDepthSearchWebCrawler(configFile.getSearchQuery(),stateHandler);				 
-				executor.submit(worker);
-			}	
-			shutdownAndAwaitTermination(executor,stateHandler);
+				crawlers.submit(crawlerTask);
+				searchers.submit(searchTask);
+			}
+			shutdownAndAwaitTermination(crawlers, stateHandler);
+			shutdownAndAwaitTermination(searchers, stateHandler);
 
 		}
 		catch(FileNotFoundException e){
@@ -44,7 +53,8 @@ public class Main {
 			System.out.println(System.out.printf("%s", e.toString()));
 		}
 		catch(Exception e){
-			System.out.println(System.out.printf("unhandeled exception %s", e.toString()));
+			e.printStackTrace();
+			System.out.println(System.out.printf("unhandled exception %s", e.toString()));
 		}
 
 
@@ -59,11 +69,11 @@ public class Main {
 	private static void shutdownAndAwaitTermination(ExecutorService pool,StateHandler stateHandler) {
 		pool.shutdown();
 		try {
-			// Wait 60 seconds  for existing tasks to terminate
+			// Wait for existing tasks to terminate
 			if (!pool.awaitTermination(stateHandler.getConfigFile().getDurationOfWebCrawler(), stateHandler.getConfigFile().getTimeUnit())) {  
 				pool.shutdownNow(); 
 
-				if (!pool.awaitTermination(610, TimeUnit.MINUTES))
+				if (!pool.awaitTermination(5, TimeUnit.SECONDS))
 					System.err.println("Pool did not terminate");
 			}
 		} catch (InterruptedException ie) {
@@ -72,6 +82,7 @@ public class Main {
 		}
 		finally {
 			stateHandler.flush();
+			stateHandler.shutdown();
 		}
 	} 
 	

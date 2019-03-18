@@ -2,16 +2,18 @@ package util;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import UrlFrontier.PriorityQueue;
-import UrlFrontier.UrlFrontier;
+import UrlFrontier.UrlFrontierSingleton;
 
 /**
  * 
@@ -27,22 +29,18 @@ public class StateHandler {
 	 */
 	private ConcurrentHashMap<String,List<String>> urlHostToResultSet;
 	/**
-	 * The url frontier of the crawler
-	 */
-	private UrlFrontier urlFrontier;
-	/**
 	 * the configuration file
 	 */
 	private ConfigurationFile configfile;
-	/**
-	 * Gson object for reading/writing to files with json format
-	 */
-	private Gson gson;
 	/**
 	 * The priority queue type
 	 */
 	private static final Type PRIORITYQUEUETYPE = new TypeToken<PriorityQueue>() {
 	}.getType();
+
+	private ExecutorService executor;
+
+	private Gson gson;
 
 
 	/**
@@ -52,19 +50,14 @@ public class StateHandler {
 	 * @throws FileNotFoundException
 	 * @throws Exception
 	 */
-	public StateHandler(ConfigurationFile configFile) throws FileNotFoundException, Exception{
-		gson =  new Gson();
-		urlHostToResultSet = new ConcurrentHashMap<String, List<String>>();
+	public StateHandler(ConfigurationFile configFile) throws Exception{
+		urlHostToResultSet = new ConcurrentHashMap<>();
 		this.configfile = configFile;
+		gson = new Gson();
 		buildUrlFrontier(configFile.getStateFileNameFullPath());
 		buildEmailsMap(configFile.getResultsFilesFullPath());
-	}
-	/**
-	 * Getter for the URL frontier
-	 * @return UrlFrontier
-	 */
-	public UrlFrontier getUrlFrontier(){
-		return this.urlFrontier;
+		executor = Executors.newSingleThreadExecutor();
+
 	}
 	/**
 	 * Getter for the configuration file
@@ -73,12 +66,12 @@ public class StateHandler {
 	public ConfigurationFile getConfigFile(){
 		return this.configfile;
 	}
+
 	/**
 	 * The function save the state of the crawler to local disk
 	 */
 	public void flush(){
-		saveResults();
-		saveUrlsFound();
+		saveDataToDisk();
 	}
 	/**
 	 * Add a list of string at a given key to the hash map
@@ -92,27 +85,18 @@ public class StateHandler {
 		}
 		else{
 			urlHostToResultSet.putIfAbsent(key, values);
-		}			
+		}
+
 	}
 	/**
 	 * Save the results to local results file
 	 * Serialize the results using GSON - overwriting existing data (as previous data is already loaded)
 	 */
-	private void saveResults(){
-		String jsonOutput = gson.toJson(urlHostToResultSet);
-		List<String> lines = Arrays.asList(jsonOutput);
-		FileHandlerIO fileHandler = new FileHandlerIO(configfile.getResultsFilesFullPath());
-		fileHandler.WriteFile(lines,StandardOpenOption.TRUNCATE_EXISTING );		
+	private void saveDataToDisk(){
+		FileHandlerIO fileHandler = new FileHandlerIO(this);
+		executor.execute(fileHandler);
 	}
-	/**
-	 * Saves the state of the URL frontier
-	 */
-	private void saveUrlsFound(){
-		String jsonOutput = gson.toJson(urlFrontier.getQueue());
-		List<String> lines = Arrays.asList(jsonOutput);
-		FileHandlerIO fileHandler = new FileHandlerIO(configfile.getStateFileNameFullPath());
-		fileHandler.WriteFile(lines,StandardOpenOption.TRUNCATE_EXISTING );			
-	}
+
 	/**
 	 * The function restore the state of the URL frontier if exists
 	 * @param fromFileName
@@ -121,13 +105,15 @@ public class StateHandler {
 		try{
 			JsonReader jsonReader = new JsonReader(new FileReader(fromFileName));
 			PriorityQueue queue = gson.fromJson(jsonReader, PRIORITYQUEUETYPE);
-			if(queue == null || queue.isEmpty())
-				urlFrontier =  new UrlFrontier(configfile.getSeeds());
-			else
-				urlFrontier = new UrlFrontier(queue);					
-		}catch(FileNotFoundException e){
+			if(queue == null || queue.isEmpty()) {
+				UrlFrontierSingleton.getInstance().initUrlFrontierSingleton(configfile.getSeeds());
+			}
+			else {
+				UrlFrontierSingleton.getInstance().initUrlFrontierSingleton(queue);
+			}
+		} catch(FileNotFoundException e){
 			Logger.warn(String.format("could not file %s", fromFileName));
-			urlFrontier =  new UrlFrontier(configfile.getSeeds());
+			UrlFrontierSingleton.getInstance().initUrlFrontierSingleton(configfile.getSeeds());
 		}
 
 	}
@@ -142,16 +128,23 @@ public class StateHandler {
 			JsonReader jsonReader = new JsonReader(new FileReader(fromFileName));
 			ConcurrentHashMap<String,List<String>> emailsMap = gson.fromJson(jsonReader, ConcurrentHashMap.class);
 			if(emailsMap == null || emailsMap.isEmpty())
-				urlHostToResultSet =  new ConcurrentHashMap<String,List<String>>();
+				urlHostToResultSet = new ConcurrentHashMap<>();
 			else
 				urlHostToResultSet = emailsMap;					
 		}
 		catch(FileNotFoundException e){
 			Logger.warn(String.format("could not file %s", fromFileName));
-			urlHostToResultSet =  new ConcurrentHashMap<String,List<String>>();
+			urlHostToResultSet = new ConcurrentHashMap<>();
 		}
-
 	}
 
+	public ConcurrentHashMap<String,List<String>> getUrlHostToResultSet() {
+		return urlHostToResultSet;
+	}
+
+	public void shutdown() {
+		Logger.info("Shutting down State Handler executer");
+		executor.shutdown();
+	}
 
 }
