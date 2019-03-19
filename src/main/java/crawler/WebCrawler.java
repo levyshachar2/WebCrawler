@@ -1,11 +1,6 @@
 package crawler;
 
-import java.net.URL;
-import java.util.List;
-import java.util.regex.Pattern;
-import UrlFrontier.UrlFrontierSingleton;
 import httpParser.HttpParser;
-import util.StateHandler;
 
 /**
  * 

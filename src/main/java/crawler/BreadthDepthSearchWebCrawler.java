@@ -1,16 +1,11 @@
 package crawler;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import UrlFrontier.UrlFrontierSingleton;
-import org.apache.commons.lang3.time.StopWatch;
 import org.pmw.tinylog.Logger;
+import org.springframework.util.StopWatch;
 
-import httpParser.HttpParser;
-import util.StateHandler;
+import java.net.URL;
+import java.util.List;
 
 /**
  * 

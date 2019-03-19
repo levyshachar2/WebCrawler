@@ -1,22 +1,20 @@
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import UrlFrontier.UrlFrontierSingleton;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import crawler.BreadthDepthSearchWebCrawler;
 import httpParser.HttpRegexSearcher;
-import org.apache.commons.lang3.time.StopWatch;
-import org.junit.rules.Stopwatch;
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.writers.FileWriter;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import util.ConfigurationFile;
 import util.FileHandlerIO;
 import util.StateHandler;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 	private final static int UPPERBOUNDNUMBEROFTHREADS = 5;
@@ -99,8 +97,7 @@ public class Main {
 			throw new FileNotFoundException(String.format("file %s was not found", args[0]));
 		Gson gson = new Gson();
 		JsonReader jsonReader = new JsonReader(new FileReader(args[0]));
-		ConfigurationFile configFile = gson.fromJson(jsonReader, ConfigurationFile.class);		
-		return configFile;
+		return gson.fromJson(jsonReader, ConfigurationFile.class);
 	}
 
 }
