@@ -2,8 +2,8 @@
 <class-diagram version="1.1.9" icons="true" automaticImage="JPEG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
   router="FAN">  
-  <class id="1" language="java" name="crawler.WebCrawler" project="WebCrawler" 
-    file="/WebCrawler/src/crawler/WebCrawler.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="webcrawler.crawler.WebCrawler" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.crawler/WebCrawler.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="563" y="178"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -11,8 +11,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="crawler.BreadhDepthSearchWebCrawler" project="WebCrawler" 
-    file="/WebCrawler/src/crawler/BreadhDepthSearchWebCrawler.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="webcrawler.crawler.BreadhDepthSearchWebCrawler" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.crawler/BreadhDepthSearchWebCrawler.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="957" y="180"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -20,8 +20,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="httpParser.HttpParser" project="WebCrawler" 
-    file="/WebCrawler/src/httpParser/HttpParser.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="webcrawler.httpParser.HttpParser" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.httpParser/HttpParser.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="21" y="166"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -29,8 +29,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="UrlFrontier.UrlFrontier" project="WebCrawler" 
-    file="/WebCrawler/src/UrlFrontier/UrlFrontier.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="webcrawler.UrlFrontier.webcrawler.UrlFrontier" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.UrlFrontier/webcrawler.UrlFrontier.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="8" y="435"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -38,8 +38,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="UrlFrontier.PriorityQueue" project="WebCrawler" 
-    file="/WebCrawler/src/UrlFrontier/PriorityQueue.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="webcrawler.UrlFrontier.PriorityQueue" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.UrlFrontier/PriorityQueue.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="11" y="894"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -47,8 +47,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="UrlFrontier.Webpage" project="WebCrawler" 
-    file="/WebCrawler/src/UrlFrontier/Webpage.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="6" language="java" name="webcrawler.UrlFrontier.Webpage" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.UrlFrontier/Webpage.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="487" y="896"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -56,8 +56,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="util.ConfigurationFile" project="WebCrawler" 
-    file="/WebCrawler/src/util/ConfigurationFile.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="webcrawler.util.ConfigurationFile" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.util/ConfigurationFile.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="1342" y="603"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -65,8 +65,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="util.FileHandlerIO" project="WebCrawler" 
-    file="/WebCrawler/src/util/FileHandlerIO.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="8" language="java" name="webcrawler.util.FileHandlerIO" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.util/FileHandlerIO.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="833" y="935"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -74,8 +74,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="util.StateHandler" project="WebCrawler" 
-    file="/WebCrawler/src/util/StateHandler.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="9" language="java" name="webcrawler.util.StateHandler" project="WebCrawler"
+    file="/WebCrawler/src/webcrawler.util/StateHandler.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="579" y="605"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -102,7 +102,7 @@
   </association>  
   <association id="14">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="httpParser"/>      
+      <attribute id="15" name="webcrawler.httpParser"/>
       <multiplicity id="16" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    

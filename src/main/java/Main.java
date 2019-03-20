@@ -1,14 +1,14 @@
-import UrlFrontier.UrlFrontierSingleton;
+import webcrawler.UrlFrontier.UrlFrontierSingleton;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import crawler.BreadthDepthSearchWebCrawler;
-import httpParser.HttpRegexSearcher;
+import webcrawler.crawler.BreadthDepthSearchWebCrawler;
+import webcrawler.httpParser.HttpRegexSearcher;
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.writers.FileWriter;
-import util.ConfigurationFile;
-import util.FileHandlerIO;
-import util.StateHandler;
+import webcrawler.util.ConfigurationFile;
+import webcrawler.util.FileHandlerIO;
+import webcrawler.util.StateHandler;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -59,10 +59,10 @@ public class Main {
 	}
 
 	/**
-	 * The function waits a given amount of time to wait until the web crawler is complete
+	 * The function waits a given amount of time to wait until the web webcrawler.crawler is complete
 	 * then sends interrupt when that time comes and gracefully shut it down
 	 * @param pool - the pool of threads to shut down
-	 * @param stateHandler - state handler for handling the state of the web crawler
+	 * @param stateHandler - state handler for handling the state of the web webcrawler.crawler
 	 */
 	private static void shutdownAndAwaitTermination(ExecutorService pool,StateHandler stateHandler) {
 		pool.shutdown();
@@ -86,8 +86,8 @@ public class Main {
 	
 	/**
 	 * Read the initial param from argument - the location of the configuration file
-	 * @param args - arguments for the web crawler
-	 * @return ConfigurationFile containing the necessary configuration for the web crawler
+	 * @param args - arguments for the web webcrawler.crawler
+	 * @return ConfigurationFile containing the necessary configuration for the web webcrawler.crawler
 	 * @throws FileNotFoundException in case the configuration file doesn't exist
 	 */
 	private static ConfigurationFile ReadInitialParams(String[] args) throws FileNotFoundException {

@@ -1,12 +1,12 @@
 Web-Crawler
-The web crawler must take as an input a configuration file
+The web webcrawler.crawler must take as an input a configuration file
 An example configuration file exist in the repository.
-The crawler runs for the time configured in his configuration file, and only save results when finish running.
+The webcrawler.crawler runs for the time configured in his configuration file, and only save results when finish running.
 
 
 INSTRUCTIONS:
 1)make sure maven is installed and configured correctly
-2)unzip web crawler zip file
+2)unzip web webcrawler.crawler zip file
 3)cd to unzipped folder
 3)mvn clean compile assembly:single
 4)cd target
