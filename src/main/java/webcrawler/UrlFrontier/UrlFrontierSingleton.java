@@ -19,7 +19,7 @@ public class UrlFrontierSingleton {
 	private PriorityQueue urlQueue;
 
 	private UrlFrontierSingleton() {
-
+		initUrlFrontierSingleton();
 	}
 
 	private static class SingletonHelper{
@@ -55,6 +55,9 @@ public class UrlFrontierSingleton {
 	 * Gets the head of the priority queue, returns the element with the min priority
 	 */
 	public URL getUrl() {
+		if (urlQueue == null) {
+			return null;
+		}
 		Webpage page = urlQueue.poll();
 		if(page != null)
 			return page.getURL();
@@ -67,6 +70,13 @@ public class UrlFrontierSingleton {
 	public boolean isEmpty(){
 		return urlQueue.isEmpty();
 	}
+
+	public boolean isUrlExist(URL url) {
+		if (urlQueue == null || urlQueue.isEmpty()) {
+			return false;
+		}
+		return urlQueue.seenUrl(url);
+	}
 	/**
 	 * 
 	 * @return size of queue
@@ -74,13 +84,14 @@ public class UrlFrontierSingleton {
 	public int size(){
 		return urlQueue.size();
 	}
+
 	/**
 	 * The function searches for the URL in the queue before inserting the URL.
 	 * if the URL is already seen , decrease it's priority and then insert it to the queue.
 	 * that way we are making sure little harassment to the same server (politeness)
 	 * @param url - a given URL
 	 */
-	private void insert(URL url){
+	public void insert(URL url){
 		if(urlQueue.seenUrl(url)){
 			Webpage seenPage = urlQueue.getWebPage(url);
 			seenPage.decreasePriority();
@@ -99,13 +110,11 @@ public class UrlFrontierSingleton {
 			insert(url);
 		}
 	}
-	
-	/**
-	 * 
-	 * @return the queue
-	 */
-	public PriorityQueue getQueue(){
-		return this.urlQueue;
+
+	public void updateUrlToSearched(URL url) {
+		Webpage webpage = this.urlQueue.getWebPage(url);
+		webpage.setSearched(true);
 	}
+
 
 }

@@ -9,7 +9,7 @@
     <changeSet id="01" author="shacharl">
         <createTable tableName="WEB_CRAWLER"
                      remarks="A table defining the web crawlers metadata">
-            <column name="WEB_CRAWLER_ID" type="int">
+            <column name="WEB_CRAWLER_ID" type="uuid">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="WEB_CRAWLER_TYPE" type="varchar(100)" defaultValue="BFS">
@@ -20,7 +20,7 @@
         </createTable>
         <createTable tableName="CONFIGURATIONS"
                      remarks="A configuration table">
-            <column name="CON_ID" type="int">
+            <column name="CON_ID" type="uuid">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="CON_KEY" type="varchar(255)">
@@ -29,7 +29,7 @@
             <column name="CON_VALUE" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="CON_CRAWLER_ID" type="int">
+            <column name="CON_CRAWLER_ID" type="uuid">
                 <constraints nullable="true" foreignKeyName="true"/>
             </column>
             <column name="WEB_CRAWLER_DATE_CREATED" type="timestamp"  defaultValueComputed="CURRENT_TIMESTAMP"/>
@@ -38,6 +38,55 @@
         <addForeignKeyConstraint baseTableName="CONFIGURATIONS" baseColumnNames="CON_CRAWLER_ID" constraintName="CONFIGURATION_CRAWLER_ID" referencedTableName="WEB_CRAWLER"
                                  referencedColumnNames="WEB_CRAWLER_ID" />
 
+    </changeSet>
+
+    <changeSet id="02" author="shacharl">
+        <createTable tableName="RESULT">
+            <column name="RESULT_ID" type="uuid">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="RESULT_VALUE" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="WEBPAGE">
+            <column name="WEBPAGE_ID" type="uuid" >
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="WEBPAGE_URL" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WEBPAGE_SEARCHED" type="bool" defaultValue="false"/>
+            <column name="WEBPAGE_PRIORITY" type="int" defaultValue="0"/>
+            <column name="WEBPAGE_RES_ID" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="03" author="shacharl">
+        <createTable tableName="RESULT_STATE">
+            <column name="RES_STAT_ID" type="uuid">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="RES_STAT_WEBPAGE_ID" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RES_STAT_WEB_CRAWLER_ID" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RES_STAT_RESULT_ID" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addForeignKeyConstraint baseTableName="RESULT_STATE" baseColumnNames="RES_STAT_WEBPAGE_ID" constraintName="RESULT_STATE_WEBPAGE_FOREIGN_KEY_WEBPAGE" referencedTableName="WEBPAGE"
+                                 referencedColumnNames="WEBPAGE_ID"/>
+        <addForeignKeyConstraint baseTableName="RESULT_STATE" baseColumnNames="RES_STAT_WEB_CRAWLER_ID" constraintName="RESULT_STATE_WEB_CRAWLER_FOREIGN_KEY_WEB_CRAWLER" referencedTableName="WEB_CRAWLER"
+                                 referencedColumnNames="WEB_CRAWLER_ID"/>
+        <addForeignKeyConstraint baseTableName="RESULT_STATE" baseColumnNames="RES_STAT_RESULT_ID" constraintName="RESULT_STATE_RES_STAT_RESULT_ID_FOREIGN_KEY_RESULT" referencedTableName="RESULT"
+                                 referencedColumnNames="RESULT_ID"/>
     </changeSet>
 
 

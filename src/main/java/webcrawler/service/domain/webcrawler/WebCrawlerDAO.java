@@ -1,9 +1,12 @@
 package webcrawler.service.domain.webcrawler;
 
-import java.util.List;
+import webcrawler.crawler.WebCrawler;
 
 public interface WebCrawlerDAO {
 
-    List<WebCrawlerState> getWebCrawlersState();
+    boolean addWebCrawler(WebCrawler webCrawlerType);
+    boolean removeWebCrawler(String webCrawlerId);
+    boolean stopWebCrawler(String webCrawlerId);
+    boolean startWebCrawler(String webCrawlerId);
 
 }

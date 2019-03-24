@@ -7,10 +7,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.pmw.tinylog.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import webcrawler.UrlFrontier.PriorityQueue;
 import webcrawler.UrlFrontier.UrlFrontierSingleton;
 
@@ -40,6 +42,8 @@ public class StateHandler {
 	private ExecutorService executor;
 
 	private Gson gson;
+
+	private Logger logger = LoggerFactory.getLogger(StateHandler.class);
 
 
 	/**
@@ -93,7 +97,7 @@ public class StateHandler {
 	 */
 	private void saveDataToDisk(){
 		FileHandlerIO fileHandler = new FileHandlerIO(this);
-		executor.execute(fileHandler);
+		//executor.execute(fileHandler);
 	}
 
 	/**
@@ -111,7 +115,7 @@ public class StateHandler {
 				UrlFrontierSingleton.getInstance().initUrlFrontierSingleton(queue);
 			}
 		} catch(FileNotFoundException e){
-			Logger.warn(String.format("could not file %s", fromFileName));
+			logger.warn(String.format("could not file %s", fromFileName));
 			UrlFrontierSingleton.getInstance().initUrlFrontierSingleton(configfile.getSeeds());
 		}
 
@@ -132,7 +136,7 @@ public class StateHandler {
 				urlHostToResultSet = emailsMap;					
 		}
 		catch(FileNotFoundException e){
-			Logger.warn(String.format("could not file %s", fromFileName));
+			logger.warn(String.format("could not file %s", fromFileName));
 			urlHostToResultSet = new ConcurrentHashMap<>();
 		}
 	}
@@ -142,7 +146,7 @@ public class StateHandler {
 	}
 
 	public void shutdown() {
-		Logger.info("Shutting down State Handler executer");
+		logger.info("Shutting down State Handler executer");
 		executor.shutdown();
 	}
 

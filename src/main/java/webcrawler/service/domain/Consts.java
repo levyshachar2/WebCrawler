@@ -12,6 +12,11 @@ public class Consts {
             this.value = value;
         }
 
+        public int getValue() {
+            return value;
+        }
+
+
         public static WebCrawlerType convertFromInt(Integer value) {
             if(value == null || value < 0 || value >= values().length) {
                 return null;

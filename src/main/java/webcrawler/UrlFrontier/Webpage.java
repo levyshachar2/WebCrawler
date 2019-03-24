@@ -1,5 +1,6 @@
 package webcrawler.UrlFrontier;
 import java.net.URL;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,6 +12,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Webpage implements Comparable<Webpage> {
 	/**
+	 * Url ID
+	 */
+	private UUID urlId;
+
+	/**
 	 * A URL
 	 */
 	private URL url;
@@ -18,13 +24,21 @@ public class Webpage implements Comparable<Webpage> {
 	 * the number of times this url was visited
 	 */
 	private AtomicInteger  numberOfTimesVisited;
+
+	/**
+	 * A boolean indicates if this webpage was searched
+	 */
+
+	private boolean isSearched;
 	/**
 	 * Constructor , initial time visited is 0 
 	 * @param url
 	 */
 	public Webpage(URL url){
+		this.urlId = UUID.randomUUID();
 		this.url = url;
 		this.numberOfTimesVisited = new AtomicInteger(0);
+		this.isSearched = false;
 	}
 	/**
 	 * Initiate the object with a specific time visitations
@@ -54,6 +68,9 @@ public class Webpage implements Comparable<Webpage> {
 	 * @return visitations number
 	 */
 	public Integer getTimesVisited(){
+		if (numberOfTimesVisited == null) {
+			return 0;
+		}
 		return numberOfTimesVisited.get();
 	}
 	/**
@@ -63,6 +80,19 @@ public class Webpage implements Comparable<Webpage> {
 	 */
 	public void decreasePriority(){
 		numberOfTimesVisited.incrementAndGet();
+	}
+
+
+	public boolean isSearched() {
+		return isSearched;
+	}
+
+	public void setSearched(boolean searched) {
+		isSearched = searched;
+	}
+
+	public UUID getUrlId() {
+		return urlId;
 	}
 
 	/**

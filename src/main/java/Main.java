@@ -3,9 +3,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import webcrawler.crawler.BreadthDepthSearchWebCrawler;
 import webcrawler.httpParser.HttpRegexSearcher;
-import org.pmw.tinylog.Configurator;
-import org.pmw.tinylog.Logger;
-import org.pmw.tinylog.writers.FileWriter;
 import webcrawler.util.ConfigurationFile;
 import webcrawler.util.FileHandlerIO;
 import webcrawler.util.StateHandler;
@@ -18,17 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 	private final static int UPPERBOUNDNUMBEROFTHREADS = 5;
-	private static final String LOGFILENAME = "log.txt";
-	
+
 	public static void main(String[] args) {
 		try{
 			ConfigurationFile configFile = ReadInitialParams(args);
-			//configure the logger
-			Configurator.defaultConfig()
-			.writer(new FileWriter(LOGFILENAME))
-			.level(configFile.getLogLevel())
-			.activate();
-			Logger.info(configFile.toString());
 			StateHandler stateHandler = new StateHandler(configFile);
 			int numberOfThreads = Math.min(UrlFrontierSingleton.getInstance().size(), UPPERBOUNDNUMBEROFTHREADS);
 			ExecutorService crawlers = Executors.newFixedThreadPool(numberOfThreads);

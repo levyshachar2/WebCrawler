@@ -1,6 +1,10 @@
 package webcrawler.crawler;
 
-import webcrawler.httpParser.HttpParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import webcrawler.service.domain.Consts;
+
+import java.util.UUID;
 
 /**
  * 
@@ -9,25 +13,35 @@ import webcrawler.httpParser.HttpParser;
  * there can be different implementations of web crawlers all using different search algorithms.
  * For example - BFS/DFS web crawlers
  */
-public abstract class WebCrawler implements Runnable {
+public abstract class WebCrawler implements Runnable,WebCrawlerStateListener {
 
-	/**
-	 * The HTTP parser
-	 */
-	private HttpParser httpParser;
+	private final Logger logger = LoggerFactory.getLogger(WebCrawler.class);
 
-	public WebCrawler() {
-		this.httpParser = new HttpParser();
+	private UUID id;
+
+	private Consts.WebCrawlerType webCrawlerType;
+
+	public WebCrawler(Consts.WebCrawlerType webCrawlerType) {
+		this.id = UUID.randomUUID();
+		this.webCrawlerType = webCrawlerType;
 	}
-	
+
+
 	/**
 	 * each webcrawler.crawler must implement this function - this function searches the web
 	 */
 	protected abstract void crawl();
 
 
-	public HttpParser getHttpParser() {
-		return httpParser;
+	Logger getLogger() {
+		return logger;
 	}
 
+	public Consts.WebCrawlerType getWebCrawlerType() {
+		return webCrawlerType;
+	}
+
+	public UUID getId() {
+		return id;
+	}
 }

@@ -17,7 +17,7 @@ import java.util.List;
  * @author shachar
  *	The class handles IO operations to local disk
  */
-public class FileHandlerIO implements Runnable {
+public class FileHandlerIO {
 
 	private StateHandler stateHandler;
 
@@ -60,15 +60,14 @@ public class FileHandlerIO implements Runnable {
 		return isExists;
 	}
 
-	@Override
-	public void run() {
-		String urlFrontierJson = gson.toJson(UrlFrontierSingleton.getInstance().getQueue());
-		List<String> lines = Collections.singletonList(urlFrontierJson);
-		writeFile(stateHandler.getConfigFile().getStateFileNameFullPath(),lines, StandardOpenOption.TRUNCATE_EXISTING);
-
-		String urlHostToResultSet = gson.toJson(stateHandler.getUrlHostToResultSet());
-		lines = Collections.singletonList(urlHostToResultSet);
-		writeFile(stateHandler.getConfigFile().getResultsFilesFullPath(), lines, StandardOpenOption.TRUNCATE_EXISTING);
-
-	}
+//	public void run() {
+//		String urlFrontierJson = gson.toJson(UrlFrontierSingleton.getInstance().getQueue());
+//		List<String> lines = Collections.singletonList(urlFrontierJson);
+//		writeFile(stateHandler.getConfigFile().getStateFileNameFullPath(),lines, StandardOpenOption.TRUNCATE_EXISTING);
+//
+//		String urlHostToResultSet = gson.toJson(stateHandler.getUrlHostToResultSet());
+//		lines = Collections.singletonList(urlHostToResultSet);
+//		writeFile(stateHandler.getConfigFile().getResultsFilesFullPath(), lines, StandardOpenOption.TRUNCATE_EXISTING);
+//
+//	}
 }

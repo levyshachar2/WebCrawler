@@ -1,7 +1,8 @@
 package webcrawler.httpParser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import webcrawler.UrlFrontier.UrlFrontierSingleton;
-import org.pmw.tinylog.Logger;
 import webcrawler.util.StateHandler;
 
 import java.net.URL;
@@ -21,14 +22,12 @@ public class HttpRegexSearcher implements Runnable {
      */
     private Pattern regularExpression;
 
-    /**
-     * The HTTP parser
-     */
-    private HttpParser httpParser;
+
+    private final Logger logger = LoggerFactory.getLogger(HttpRegexSearcher.class);
+
 
     public HttpRegexSearcher(StateHandler stateHandler) {
         this.stateHandler = stateHandler;
-        this.httpParser = new HttpParser();
         this.regularExpression = Pattern.compile(stateHandler.getConfigFile().getSearchQuery(), Pattern.CASE_INSENSITIVE);
     }
 
@@ -37,11 +36,12 @@ public class HttpRegexSearcher implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             URL url = getUrl();
             if(url == null){
-                Logger.info("no more items left to crawl");
+                logger.info("no more items left to crawl");
                 return;
             }
             List<String> emailsFound = search(url);
-            Logger.info(String.format("found emails %s at url %s",emailsFound,url));
+            UrlFrontierSingleton.getInstance().updateUrlToSearched(url);
+            logger.info(String.format("found emails %s at url %s",emailsFound,url));
             if(!emailsFound.isEmpty()) {
                 stateHandler.addResultsToResultsSet(url.getHost(), emailsFound);
             }
@@ -54,9 +54,8 @@ public class HttpRegexSearcher implements Runnable {
      * @param inputUrl - a URL to search in
      * @return List of strings representing a result set (default will be email's)
      */
-    protected List<String> search(URL inputUrl){
-        List<String> foundResults = new ArrayList<String>();
-        foundResults.addAll(httpParser.searchInPage(inputUrl, regularExpression));
+    private List<String> search(URL inputUrl){
+        List<String> foundResults = new ArrayList<>(HttpParserSingleton.getInstance().searchInPage(inputUrl, regularExpression));
         return foundResults;
     }
 

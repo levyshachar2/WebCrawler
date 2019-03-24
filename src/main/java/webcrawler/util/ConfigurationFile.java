@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import org.pmw.tinylog.Level;
-
 /**
  * 
  * @author Shachar Levy
@@ -52,7 +50,7 @@ public class ConfigurationFile {
 
 	/**
 	 * 
-	 * @param seeds - collection of seeds (urls)
+	 * @param seeds - collection of seeds (webpages)
 	 * @param query - search query regular expression
 	 * @param stateFile -  a full path to a file containing the state of the url's
 	 * @param resultsFile - a full path to a file containing the results file
@@ -128,28 +126,6 @@ public class ConfigurationFile {
 		return sb.toString();
 	}
 
-	/**
-	 * returns the log level by the string input
-	 * @return Level of log
-	 */
-	public Level getLogLevel() {
-		Level level = Level.WARNING;
-		switch(logLevel.toUpperCase(Locale.US)){
-		case "INFO":
-			level = Level.INFO;
-			break;
-		case "DEBUG":
-			level = Level.DEBUG;
-			break;
-		case "WARN":
-			level = Level.WARNING;
-			break;
-		case "ERROR":
-			level = Level.ERROR;
-			break;
-		}
-		return level;
-	}
 	/**
 	 * If duration is 0 - returns the default duration
 	 * @return duration 

@@ -1,8 +1,9 @@
 package webcrawler.crawler;
 
 import webcrawler.UrlFrontier.UrlFrontierSingleton;
-import org.pmw.tinylog.Logger;
 import org.springframework.util.StopWatch;
+import webcrawler.httpParser.HttpParserSingleton;
+import webcrawler.service.domain.Consts;
 
 import java.net.URL;
 import java.util.List;
@@ -15,8 +16,11 @@ import java.util.List;
  *
  */
 public class BreadthDepthSearchWebCrawler extends WebCrawler {
+
+	private static final Consts.WebCrawlerType type = Consts.WebCrawlerType.BFS;
+
 	public BreadthDepthSearchWebCrawler() {
-		super();
+		super(type);
 	}
 	/**
 	 * 
@@ -44,7 +48,7 @@ public class BreadthDepthSearchWebCrawler extends WebCrawler {
 	 * 
 	 */
 	protected void crawl() {
-		Logger.info(String.format("Thread %d started running", Thread.currentThread().getId()));
+		getLogger().info(String.format("Thread %d started running", Thread.currentThread().getId()));
 		StopWatch stopwatch = new StopWatch();
 		stopwatch.start();
 		try{
@@ -52,17 +56,19 @@ public class BreadthDepthSearchWebCrawler extends WebCrawler {
 				System.out.println(stopwatch.toString());
 				URL url = getUrl();
 				if(url == null){
-					Logger.info("no more items left to crawl");
+					getLogger().info("no more items left to crawl");
 					return;
 				}
-				List<URL> linksFound = getHttpParser().getHyperLinks(url);
-				Logger.info(linksFound);
+				List<URL> linksFound = HttpParserSingleton.getInstance().getHyperLinks(url);
+				for (URL link : linksFound) {
+					getLogger().info(String.format("Found link %s", link));
+				}
 				updateFoundUrls(linksFound);
 
 			}
 		}
 		catch(Exception e){
-			Logger.error(e.getMessage());
+			getLogger().error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -75,5 +81,12 @@ public class BreadthDepthSearchWebCrawler extends WebCrawler {
 		this.crawl();
 	}
 
+
+	@Override
+	public void stopWebCrawler(String id) {
+		if (this.getId().toString().equals(id)) {
+			Thread.currentThread().interrupt();
+		}
+	}
 
 }

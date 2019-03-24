@@ -2,8 +2,7 @@ package webcrawler.service.domain.webcrawler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import webcrawler.service.domain.Consts;
 
 @Service
 public class WebCrawlerServiceImpl implements WebCrawlerService {
@@ -16,7 +15,23 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
     }
 
     @Override
-    public List<WebCrawlerState> getWebCrawlersState() {
-        return null;
+    public boolean addWebCrawler(Consts.WebCrawlerType webCrawlerType) {
+        //TODO:  add check if we are currently as MAX web crawlers
+        return webCrawlerRepository.addWebCrawler(webCrawlerType);
+    }
+
+    @Override
+    public boolean removeWebCrawler(String webCrawlerId) {
+        return webCrawlerRepository.removeWebCrawler(webCrawlerId);
+    }
+
+    @Override
+    public boolean stopWebCrawler(String webCrawlerId) {
+        return false;
+    }
+
+    @Override
+    public boolean startWebCrawler(String webCrawlerId) {
+        return false;
     }
 }
