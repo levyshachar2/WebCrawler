@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,8 +90,8 @@ public class HttpParserSingleton {
      * @return a collection of found URL's
      * @throws IOException
      */
-    public List<URL> getHyperLinks(URL url) throws IOException{
-        List<URL> foundHyperLinks = new ArrayList<URL>();
+    public Set<URL> getHyperLinks(URL url) throws IOException{
+        Set<URL> foundHyperLinks = new HashSet<>();
         Document doc = getDocument(url);
         Elements links = doc.select("a[href]");
         for(int i=0 ; i<links.size() ; i++){

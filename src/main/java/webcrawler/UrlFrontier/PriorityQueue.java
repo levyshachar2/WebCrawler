@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -29,7 +30,7 @@ public class PriorityQueue {
 	/**
 	 * a collection of given seeds
 	 */
-	private List<Object> seeds;
+	private List<Webpage> seeds;
 
 	private final Logger logger = LoggerFactory.getLogger(PriorityQueue.class);
 
@@ -46,7 +47,7 @@ public class PriorityQueue {
 	 * 
 	 * @param seeds - initialize with given seeds
 	 */
-	public PriorityQueue(List<Object> seeds){
+	public PriorityQueue(List<Webpage> seeds){
 		this.seeds = seeds;
 		this.ConstructInitialDataStructures();
 	}
@@ -79,11 +80,8 @@ public class PriorityQueue {
 		if(isEmpty()){
 			return null;
 		}
-		logger.debug("min priority from queue");
 		Webpage webpage = queue.poll();
-		logger.debug(String.format("is ---- %d",webpage.getTimesVisited()));
-		logger.debug(printPriorities());
-		webpage.decreasePriority();			
+		webpage.decreasePriority();
 
 		return webpage;
 	}
@@ -141,8 +139,9 @@ public class PriorityQueue {
 	public Webpage getWebPage(URL url){
 		Webpage page = null;
 		if(seenHost(url)){
+			logger.debug("seen host url" + url.getHost());
 			List<Webpage> urlsOfHost = hostToUrlsMap.get(url.getHost());
-			page= getWebPageFromList(urlsOfHost, url);
+			page = getWebPageFromList(urlsOfHost, url);
 		}
 		return page;
 	}
@@ -154,7 +153,8 @@ public class PriorityQueue {
 	 */
 	private Webpage getWebPageFromList(List<Webpage> webPages,URL url){
 		for(Webpage page : webPages){
-			if(page.getURL() == url)
+			logger.debug("compare " + page.getURL().toString() + " with " + url.toString());
+			if(page.getURL().toString().toLowerCase().equals(url.toString().toLowerCase()))
 				return page;
 		}
 		return null;
@@ -168,19 +168,13 @@ public class PriorityQueue {
 
 		this.queue = new PriorityBlockingQueue<Webpage>(seeds.size());
 		this.hostToUrlsMap = new ConcurrentHashMap<>(seeds.size());
+		this.queue.addAll(seeds);
+
 		for (int i = 0; i < seeds.size(); ++i) {
-			Object seed = (Object) seeds.get(i);
-			try{
-				URL url = new URL(seed.toString());
-				Webpage page = new Webpage(url);
-				ArrayList<Webpage> initialList = new ArrayList<Webpage>();
-				initialList.add(page);
-				queue.add(page); //page is inserted with default priority 0 
-				hostToUrlsMap.put(url.getHost(),initialList);
-			} catch (MalformedURLException e) {
-				logger.warn("one of the given webpages is malformed");
-				logger.info(e.getMessage());
-			}
+			Webpage seed = seeds.get(i);
+			ArrayList<Webpage> initialList = new ArrayList<>();
+			initialList.add(seed);
+			hostToUrlsMap.put(seed.getURL().getHost(),initialList);
 		}
 	}
 	/**
@@ -197,4 +191,9 @@ public class PriorityQueue {
 		return sb.toString();
 	}
 
+	public Webpage[] getAllWebpages() {
+		Webpage[] webpages = queue.toArray(new Webpage[queue.size()]);
+		Arrays.sort(webpages);
+		return webpages;
+	}
 }

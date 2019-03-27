@@ -4,20 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import webcrawler.crawler.WebCrawler;
 import webcrawler.crawler.WebCrawlerFactory;
-import webcrawler.service.AsynchronousService;
 import webcrawler.service.domain.Consts;
 
 @Service
 public class WebCrawlerRepositoryImpl implements WebCrawlerRepository {
 
     private final WebCrawlerDAO webCrawlerDAO;
-    private final AsynchronousService asynchronousService;
+    private final WebCrawlerAsynchronousService webCrawlerAsynchronousService;
     private final WebCrawlerFactory webCrawlerFactory;
 
     @Autowired
-    public WebCrawlerRepositoryImpl(WebCrawlerDAO webCrawlerDAO, AsynchronousService asynchronousService, WebCrawlerFactory webCrawlerFactory) {
+    public WebCrawlerRepositoryImpl(WebCrawlerDAO webCrawlerDAO, WebCrawlerAsynchronousService webCrawlerAsynchronousService, WebCrawlerFactory webCrawlerFactory) {
         this.webCrawlerDAO = webCrawlerDAO;
-        this.asynchronousService = asynchronousService;
+        this.webCrawlerAsynchronousService = webCrawlerAsynchronousService;
         this.webCrawlerFactory = webCrawlerFactory;
     }
 
@@ -26,7 +25,7 @@ public class WebCrawlerRepositoryImpl implements WebCrawlerRepository {
     public boolean addWebCrawler(Consts.WebCrawlerType webCrawlerType) {
         WebCrawler webCrawler = webCrawlerFactory.createWebCrawler(webCrawlerType);
         boolean result = webCrawlerDAO.addWebCrawler(webCrawler);
-        return asynchronousService.executeAsynchronously(webCrawler) && result;
+        return webCrawlerAsynchronousService.executeAsynchronously(webCrawler) && result;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class WebCrawlerRepositoryImpl implements WebCrawlerRepository {
 
     @Override
     public boolean stopWebCrawler(String webCrawlerId) {
-        asynchronousService.stopWebCrawler(webCrawlerId);
+        webCrawlerAsynchronousService.stopWebCrawler(webCrawlerId);
         return true;
     }
 

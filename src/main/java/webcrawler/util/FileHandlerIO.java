@@ -19,15 +19,13 @@ import java.util.List;
  */
 public class FileHandlerIO {
 
-	private StateHandler stateHandler;
 
 	/**
 	 * Gson object for reading/writing to files with json format
 	 */
 	private Gson gson;
 
-	public FileHandlerIO(StateHandler stateHandler){
-		this.stateHandler = stateHandler;
+	public FileHandlerIO(){
 		this.gson =  new Gson();
 		
 	}
@@ -60,14 +58,4 @@ public class FileHandlerIO {
 		return isExists;
 	}
 
-//	public void run() {
-//		String urlFrontierJson = gson.toJson(UrlFrontierSingleton.getInstance().getQueue());
-//		List<String> lines = Collections.singletonList(urlFrontierJson);
-//		writeFile(stateHandler.getConfigFile().getStateFileNameFullPath(),lines, StandardOpenOption.TRUNCATE_EXISTING);
-//
-//		String urlHostToResultSet = gson.toJson(stateHandler.getUrlHostToResultSet());
-//		lines = Collections.singletonList(urlHostToResultSet);
-//		writeFile(stateHandler.getConfigFile().getResultsFilesFullPath(), lines, StandardOpenOption.TRUNCATE_EXISTING);
-//
-//	}
 }

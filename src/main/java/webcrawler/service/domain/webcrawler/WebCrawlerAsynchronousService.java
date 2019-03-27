@@ -1,36 +1,34 @@
-package webcrawler.service;
+package webcrawler.service.domain.webcrawler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
+import webcrawler.listeners.StateListener;
 import webcrawler.crawler.WebCrawler;
-import webcrawler.crawler.WebCrawlerStateListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AsynchronousService {
+public class WebCrawlerAsynchronousService {
 
     private final SimpleAsyncTaskExecutor taskExecutor;
-    private List<WebCrawlerStateListener> listeners;
+    private List<StateListener> listeners;
 
-    private final Logger logger = LoggerFactory.getLogger(AsynchronousService.class);
+    private final Logger logger = LoggerFactory.getLogger(WebCrawlerAsynchronousService.class);
 
 
     @Autowired
-    public AsynchronousService(SimpleAsyncTaskExecutor taskExecutor) {
+    public WebCrawlerAsynchronousService(SimpleAsyncTaskExecutor taskExecutor) {
         this.taskExecutor = taskExecutor;
         this.listeners = new ArrayList<>();
     }
 
     public void stopWebCrawler(String id){
-        for (WebCrawlerStateListener webCrawlerStateListener : listeners) {
-            webCrawlerStateListener.stopWebCrawler(id);
+        for (StateListener stateListener : listeners) {
+            stateListener.stop(id);
         }
     }
 

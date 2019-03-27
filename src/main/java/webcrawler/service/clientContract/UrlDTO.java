@@ -8,6 +8,10 @@ public class UrlDTO {
     private String url;
     private String protocol;
 
+    public UrlDTO() {
+
+    }
+
     public UrlDTO(String url, String protocol) {
         this.url = url;
         this.protocol = protocol;

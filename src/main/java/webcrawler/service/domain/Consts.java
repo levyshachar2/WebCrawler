@@ -1,8 +1,15 @@
 package webcrawler.service.domain;
 
-public class Consts {
+public interface Consts {
 
-    public enum WebCrawlerType {
+
+    interface ConfigurationKeys {
+
+        String REGULAR_EXPRESSION = "REGULAR_EXPRESSION";
+
+    }
+
+    enum WebCrawlerType {
         BFS(0),
         DFS(1);
 

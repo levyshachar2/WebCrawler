@@ -2,6 +2,7 @@ package webcrawler.crawler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webcrawler.listeners.StateListener;
 import webcrawler.service.domain.Consts;
 
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
  * there can be different implementations of web crawlers all using different search algorithms.
  * For example - BFS/DFS web crawlers
  */
-public abstract class WebCrawler implements Runnable,WebCrawlerStateListener {
+public abstract class WebCrawler implements Runnable, StateListener {
 
 	private final Logger logger = LoggerFactory.getLogger(WebCrawler.class);
 

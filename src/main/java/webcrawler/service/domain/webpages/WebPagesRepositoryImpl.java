@@ -6,6 +6,7 @@ import webcrawler.UrlFrontier.UrlFrontierSingleton;
 import webcrawler.UrlFrontier.Webpage;
 
 import java.net.URL;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,4 +30,15 @@ public class WebPagesRepositoryImpl implements WebPagesRepository {
         Webpage webpage = new Webpage(url);
         return webPagesDAO.addWebpage(webpage);
     }
+
+    @Override
+    public boolean saveWebPages(List<Webpage> webpageList) {
+        return webPagesDAO.addAllWebpages(webpageList);
+    }
+
+    @Override
+    public List<Webpage> getAllWebPages(boolean isSearched) {
+        return webPagesDAO.getAllWebpages(isSearched);
+    }
+
 }

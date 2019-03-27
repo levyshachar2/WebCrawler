@@ -63,6 +63,7 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
+        <addUniqueConstraint constraintName="WEBPAGE_UNIQUE_URL" tableName="WEBPAGE" columnNames="WEBPAGE_URL"/>
     </changeSet>
 
     <changeSet id="03" author="shacharl">
@@ -87,6 +88,16 @@
                                  referencedColumnNames="WEB_CRAWLER_ID"/>
         <addForeignKeyConstraint baseTableName="RESULT_STATE" baseColumnNames="RES_STAT_RESULT_ID" constraintName="RESULT_STATE_RES_STAT_RESULT_ID_FOREIGN_KEY_RESULT" referencedTableName="RESULT"
                                  referencedColumnNames="RESULT_ID"/>
+    </changeSet>
+
+    <changeSet id="04" author="shacharl">
+        <createTable tableName="SEARCHER">
+            <column name="SEARCHER_ID" type="uuid">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="SEARCHER_DATE_CREATED" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="SEARCHER_DATE_MODIFIED" type="timestamp"  defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
     </changeSet>
 
 

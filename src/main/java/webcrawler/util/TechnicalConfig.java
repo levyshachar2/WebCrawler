@@ -3,6 +3,7 @@ package webcrawler.util;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -24,10 +25,12 @@ public class TechnicalConfig {
     }
 
     @Bean
+    @Scope("prototype")
     public SimpleAsyncTaskExecutor threadPoolTaskExecutor() {
         SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
         executor.setConcurrencyLimit(10);
         return executor;
 
     }
+
 }

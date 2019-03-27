@@ -30,6 +30,14 @@ public class Webpage implements Comparable<Webpage> {
 	 */
 
 	private boolean isSearched;
+
+	public Webpage(UUID urlId, URL url, AtomicInteger numberOfTimesVisited, boolean isSearched) {
+		this.urlId = urlId;
+		this.url = url;
+		this.numberOfTimesVisited = numberOfTimesVisited;
+		this.isSearched = isSearched;
+	}
+
 	/**
 	 * Constructor , initial time visited is 0 
 	 * @param url
@@ -104,7 +112,7 @@ public class Webpage implements Comparable<Webpage> {
 			return false;
 		}
 		if(other instanceof Webpage)
-			return url.toString().toLowerCase() == ((Webpage)other).getURL().toString().toLowerCase();
+			return url.toString().toLowerCase().equals(((Webpage) other).getURL().toString().toLowerCase());
 		return false;
 	}
 

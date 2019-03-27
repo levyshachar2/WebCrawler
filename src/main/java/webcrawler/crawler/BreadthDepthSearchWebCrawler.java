@@ -7,6 +7,7 @@ import webcrawler.service.domain.Consts;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -34,7 +35,7 @@ public class BreadthDepthSearchWebCrawler extends WebCrawler {
 	 * The function update the URL frontier with the newly discovered URL's
 	 * @param urlsFound - url's found during the crawl of a specific url
 	 */
-	private void updateFoundUrls(List<URL> urlsFound) {
+	private void updateFoundUrls(Set<URL> urlsFound) {
 		UrlFrontierSingleton.getInstance().updateFoundUrls(urlsFound);
 	}
 	/**
@@ -59,7 +60,7 @@ public class BreadthDepthSearchWebCrawler extends WebCrawler {
 					getLogger().info("no more items left to crawl");
 					return;
 				}
-				List<URL> linksFound = HttpParserSingleton.getInstance().getHyperLinks(url);
+				Set<URL> linksFound = HttpParserSingleton.getInstance().getHyperLinks(url);
 				for (URL link : linksFound) {
 					getLogger().info(String.format("Found link %s", link));
 				}
@@ -83,7 +84,7 @@ public class BreadthDepthSearchWebCrawler extends WebCrawler {
 
 
 	@Override
-	public void stopWebCrawler(String id) {
+	public void stop(String id) {
 		if (this.getId().toString().equals(id)) {
 			Thread.currentThread().interrupt();
 		}
